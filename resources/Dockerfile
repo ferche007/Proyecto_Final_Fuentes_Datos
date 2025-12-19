@@ -18,6 +18,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY resources/NBA.csv .
 COPY resources/student_habits.xlsx .
 COPY resources/main.py .
+COPY resources/demograficos_2025.csv .
 
 ENV DISPLAY=:0
 CMD ["python", "main.py"]
