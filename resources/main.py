@@ -426,19 +426,32 @@ def dist_calc():
     columna = var.get()
     distribucion.withdraw()
     rango = range(1, len(datos[columna]) + 1)
-    proba_de_est = 1 / (math.comb(500, tamanio_muestra))
+    proba_de_est = 1 / (math.comb(len(datos[columna]) + 1, tamanio_muestra))
     lista_est = []
+    esperanza = 0
     for i in combinations(rango, tamanio_muestra):
         lista_unidades = list(i)
         valores = np.array([datos_dist.iloc[j - 1][columna] for j in lista_unidades])
         suma_valores = np.sum(valores)
         estimador_prom = suma_valores / tamanio_muestra
+        esperanza = esperanza + (estimador_prom * proba_de_est)
         lista_est.append(estimador_prom)
     est_num = []
     for est in lista_est:
         num_veces = lista_est.count(est)
         est_num.append([est, num_veces])
-
+    lista_est_val = list(dict.fromkeys(est_num))
+    x_vals = [par[0] for par in lista_est_val]
+    y_vals = [par[1] for par in lista_est_val]
+    fig = Figure(figsize=(8, 6), dpi=100)
+    ax = fig.add_subplot(111)
+    ax.bar(x_vals, y_vals)
+    ax.set_xlabel("Estimador")
+    ax.set_ylabel("Frecuencia")
+    ax.set_title("Distribución del estimador")
+    canvas = FigureCanvasTkAgg(fig, master=dist_calc)
+    canvas.draw()
+    canvas.get_tk_widget().pack(fill="both", expand=True)
     boton_volver = tk.Button(
         dist_calc,
         text="⬅ Regresar a Selección método",
