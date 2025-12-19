@@ -17,10 +17,10 @@ WORKDIR /app
 
 COPY resources/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY resources/NBA.csv .
-COPY resources/student_habits.xlsx .
-COPY resources/main.py .
-COPY resources/demograficos_2025.csv .
+COPY NBA.csv .
+COPY student_habits.xlsx .
+COPY main.py .
+COPY demograficos_2025.csv .
 
 EXPOSE 5900
 
