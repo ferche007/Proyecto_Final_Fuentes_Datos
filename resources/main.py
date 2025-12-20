@@ -203,12 +203,14 @@ def calcula_est():
     longitud_columna = len(datos_est[col_var])
     tamanio_muestra = int(entrada_tamanio.get())
     col_estratos = entrada_est.get()
-    estratos = estratos = [
-        x.strip() for x in entrada_estratos_cu.get().strip("()").split(",")
+    estratos = [
+        x.strip().strip('"').strip("'")
+        for x in entrada_estratos_cu.get().strip("()").split(",")
     ]
     est.withdraw()
     num_cada_est = []
     df_estratos = []
+    datos_est[col_estratos] = datos_est[col_estratos].astype(str).str.strip()
     for i in estratos:
         numero = (datos_est[col_estratos].astype(str) == i).sum()
         num_cada_est.append(numero)
@@ -233,7 +235,8 @@ def calcula_est():
         ids_por_estrato.append(ids_estrato_i)
     valores_estrato = []
     for i in ids_por_estrato:
-        valores_estrato.append(np.array([datos_est.iloc[x - 1][col_var] for x in i]))
+        valores = np.array([datos_est.iloc[x - 1][col_var] for x in i])
+        valores_estrato.append(valores[~np.isnan(valores)])
     suma = []
     for i in valores_estrato:
         suma.append(np.sum(i))
